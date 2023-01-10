@@ -1,24 +1,23 @@
 import PropTypes from 'prop-types';
 import css from '../Searchbar/Searchbar.module.css';
-import React, { Component } from 'react';
+import  { useState } from 'react';
 import { BiSearchAlt } from 'react-icons/bi';
 
-export  class SearchBar extends Component  {
-    state = {
-        queryString: '',
-    };
-    handleChange = (event) => {
-    this.setState({queryString:event.currentTarget.value})
+export function SearchBar({ onSubmit }) {
+  const [queryString, setQueryString] = useState('');
+
+  const  handleChange = (event) => {
+    setQueryString(event.currentTarget.value)
 }
-    handleFormSubmit = (event) => {
+  const  handleFormSubmit = (event) => {
         event.preventDefault();
-        this.props.onSubmit(this.state.queryString);
-        this.setState({ queryString: '' });
+        onSubmit(queryString);
+        setQueryString('');
 
 }
- render() {
+
    return <header className={css.searchbar}>
-  <form className={css.searchForm} onSubmit={this.handleFormSubmit}>
+  <form className={css.searchForm} onSubmit={handleFormSubmit}>
     <button type="submit" className={css.searchFormBtn}>
                <BiSearchAlt className={css.BiSearchAlt} />
     </button>
@@ -29,13 +28,13 @@ export  class SearchBar extends Component  {
       autoComplete="off"
       autoFocus
       placeholder="Search images and photos"
-      onChange={this.handleChange}
-      value={this.state.queryString}
+      onChange={handleChange}
+      value={queryString}
     />
   </form>
 </header>
 }
-}
+
 SearchBar.propTypes = {
     onSubmit: PropTypes.func,
 }
